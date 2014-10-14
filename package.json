@@ -1,0 +1,16 @@
+{
+  "name": "TwentyTwoSpotify",
+  "version": "0.0.1",
+  "description": "Twenty Two Spotify",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-load-plugins": "^0.7.0",
+    "gulp-notify": "^1.2.5",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^0.2.1"
+  },
+  "scripts": {},
+  "author": "",
+  "license": "MIT"
+}
