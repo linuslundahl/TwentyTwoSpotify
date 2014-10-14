@@ -30,10 +30,10 @@
         div.style['text-transform']  = 'uppercase';
 
         // ARTIST
-        div.appendChild(_.createLink('Artist', _.items[i].querySelector('.playlist__artist').textContent));
+        div.appendChild(_.createLink('Artist', encodeURIComponent(_.items[i].querySelector('.playlist__artist').textContent).replace(/%20/g,'+')));
 
         // TRACK
-        div.appendChild(_.createLink('Track', _.items[i].querySelector('.playlist__artist').textContent + ' ' + _.items[i].querySelector('.playlist__title').textContent));
+        div.appendChild(_.createLink('Track', encodeURIComponent(_.items[i].querySelector('.playlist__artist').textContent + ' ' + _.items[i].querySelector('.playlist__title').textContent).replace(/%20/g,'+')));
 
         // INSERT TO DOCUMENT
         _.items[i].appendChild(div);
