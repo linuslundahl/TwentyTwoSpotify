@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<title>Svpply</title>
+
+<!-- Proxy for settings -->
+
+<script>
+  safari.application.addEventListener("navigate", eventHandler, true);
+  safari.application.addEventListener("open", eventHandler, true);
+
+  function eventHandler () {
+    var ex_url = safari.extension.baseURI + "scripts.js";
+    safari.extension.addContentScriptFromURL(ex_url, ['http://22tracks.com/*', 'http://*.last.fm/*'], [], true);
+  }
+</script>
+
+</head>
+<body>
+</body>
+</html>

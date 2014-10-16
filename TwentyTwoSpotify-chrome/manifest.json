@@ -1,0 +1,23 @@
+{
+  "name": "Twenty Two Spotify",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Adds links to Spotify on 22tracks.com and Last.fm",
+  "homepage_url": "http://linuslundahl.github.io/TwentyTwoSpotify",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://22tracks.com/*",
+        "http://*.last.fm/*"
+      ],
+      "js": [
+        "js/inject/TwentyTwoSpotify.js"
+      ]
+    }
+  ]
+}
