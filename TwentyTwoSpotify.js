@@ -213,7 +213,6 @@
      * Creates a cleaned up spotify search URL
      */
     createUrl : function (url) {
-      console.log(url);
       var ret = [];
       for (var i = 0, l = url.length; i < l; i++) {
         for (var key in url[i]) {
