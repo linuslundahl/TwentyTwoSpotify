@@ -64,11 +64,11 @@
           div.style['text-transform']  = 'uppercase';
 
           // Artist
-          url.push('artist:"' + items[i].querySelector('.playlist__artist').textContent + '"');
+          url.push({artist : items[i].querySelector('.playlist__artist').textContent});
           div.appendChild(_.createLink(url, ' Artist'));
 
           // Track
-          url.push('track:"' + items[i].querySelector('.playlist__title').textContent + '"');
+          url.push({track : items[i].querySelector('.playlist__title').textContent});
           div.appendChild(_.createLink(url, ' Track'));
 
           // Add to the DOM
@@ -213,6 +213,7 @@
      * Creates a cleaned up spotify search URL
      */
     createUrl : function (url) {
+      console.log(url);
       var ret = [];
       for (var i = 0, l = url.length; i < l; i++) {
         for (var key in url[i]) {
