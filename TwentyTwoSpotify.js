@@ -64,7 +64,7 @@
           div.style['text-transform']  = 'uppercase';
 
           // Artist
-          url.push({artist : items[i].querySelector('.playlist__artist').textContent});
+          url.push({artist : '"' + items[i].querySelector('.playlist__artist').textContent + '"'});
           div.appendChild(_.createLink(url, ' Artist'));
 
           // Track
@@ -174,15 +174,15 @@
 
         // artist page
         if (_.bodyEl.className.match(/\br\-artist\b/)) {
-          url.push({artist : h1.textContent});
+          url.push({artist : '"' + h1.textContent + '"'});
           append = false;
         // album page
         } else if (_.bodyEl.className.match(/\br\-album\b/)) {
-          url.push({artist : h1.firstChild.textContent});
+          url.push({artist : '"' + h1.firstChild.textContent + '"'});
           url.push({album : h1.lastChild.textContent});
         // track page
         } else if (_.bodyEl.className.match(/\br\-track\b/)) {
-          url.push({artist : h1.firstChild.textContent});
+          url.push({artist : '"' + h1.firstChild.textContent + '"'});
           url.push({track : h1.lastChild.textContent.substring(3)});
         }
 
@@ -216,7 +216,7 @@
       var ret = [];
       for (var i = 0, l = url.length; i < l; i++) {
         for (var key in url[i]) {
-          ret.push(key + ':"' + this.trim(url[i][key]) + '"');
+          ret.push(key + ':' + this.trim(url[i][key]) + '');
         }
       }
       return 'spotify:search:' + encodeURIComponent(ret.join(' ')).replace(/%20/g,'+').replace(/%25([0-9]{2})/, '%$1');
