@@ -45,8 +45,7 @@
      */
     twentyTwoTracks : function () {
       var _ = this,
-          hasRun = false,
-          addLinks;
+          timeout, addLinks;
 
       addLinks = function () {
         var items = document.querySelectorAll('.playlist__track'),
@@ -83,8 +82,8 @@
       // Listen for updates to the DOM
       document.addEventListener('DOMNodeInserted', function (ev) {
         if (ev.relatedNode.classList.contains('playlist') && !hasRun) {
-          hasRun = true;
-          setTimeout(addLinks, 2000);
+          clearTimeout(timeout);
+          timeout = setTimeout(addLinks, 2000);
         }
       }, true);
 
@@ -97,8 +96,7 @@
     lastFm : function () {
       var _ = this,
           url = [],
-          hasRun = false,
-          addLinks;
+          addLinks, timeout;
 
       addLinks = function () {
         var re = /^http:\/\/(.*\.|)(last\.fm|lastfm\.[^\/]+)\/music\/([^\?#]*)$/i,
@@ -129,9 +127,9 @@
       addLinks();
 
       document.addEventListener('DOMNodeInserted', function (ev) {
-        if (ev.relatedNode.classList.contains('main-content') && !hasRun) {
-          hasRun = true;
-          setTimeout(addLinks, 2000);
+        if (ev.relatedNode.classList.contains('main-content')) {
+          clearTimeout(timeout);
+          timeout = setTimeout(addLinks, 2000);
         }
       }, true);
     },
