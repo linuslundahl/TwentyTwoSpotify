@@ -97,101 +97,34 @@
     lastFm : function () {
       var _ = this,
           url = [],
-          append = true,
-          a, h1, addLinks,
-          div = document.querySelectorAll('.page-head')[0];
+          addLinks;
 
       addLinks = function () {
         var re = /^http:\/\/(.*\.|)(last\.fm|lastfm\.[^\/]+)\/music\/([^\?#]*)$/i,
-            elems, elem, match, found, parts, p, url, a;
+            elems, elem, match, found, parts, a;
 
-        elems = _.bodyEl.getElementsByTagName('a');
+        elems = _.bodyEl.getElementsByClassName('link-block-target');
         for (var i = 0, l = elems.length; i < l; i++) {
           elem = elems[i];
-
-          // Ignore image links
-          if (!elem.href || _.trim(elem.textContent) === '' || elem.className.match(/\blfmButton\b/)) {
-            continue;
-          }
 
           // Check if the link matches
           match = re.exec(elem.href);
           if (match) {
-            found = false;
-
-            // Go though parts and check if it is an url that we want to change
-            parts = match[3].split('/');
-            if (parts[0].length !== 0) {
-              for (var j = 0, k = parts.length; j < k; j++) {
-                if (parts[j][0] === '+') {
-                  found = true;
-                  break;
-                }
-              }
-            }
-
-            if (found) {
-              continue;
-            }
-
-            // Ignore links in the left menu and some other places
-            p = elem;
-            while (p !== null) {
-              if (p.id && p.id.match(/^(secondaryNavigation|featuredArtists)$/) || p.className && p.className.match(/\b(pagehead|image|artistsMegaWithFeatured|artistsSquare)\b/)) {
-                found = true;
-                break;
-              }
-              p = p.parentNode;
-            }
-
-            if (found) {
-              continue;
-            }
 
             // Create the spotify url
             url = [];
-            url.push({artist : parts[0]});
-            if (parts[1] && parts[1] !== '_') {
-              url.push({album : parts[1]});
-            }
-            if (parts[2]) {
-              url.push({track : parts[2]});
-            }
+            url.push({artist : match[3]});
 
-            a = _.createLink(url);
+            a = _.createLink(url, '', '#fff');
 
             // Insert the link after the found link
             // Check if it already have a spotify url
             if (!elem.nextSibling || !elem.nextSibling.hasAttribute || !elem.nextSibling.hasAttribute('spotifyLink')) {
-              elem.parentNode.insertBefore(a, elem.nextSibling);
+              elem.parentNode.insertBefore(a, elem);
             }
           }
         }
       };
-
-      if (_.bodyEl.className && div) {
-        h1 = div.getElementsByTagName('h1')[0];
-
-        // artist page
-        if (_.bodyEl.className.match(/\br\-artist\b/)) {
-          url.push({artist : '"' + h1.textContent + '"'});
-          append = false;
-        // album page
-        } else if (_.bodyEl.className.match(/\br\-album\b/)) {
-          url.push({artist : '"' + h1.firstChild.textContent + '"'});
-          url.push({album : h1.lastChild.textContent});
-        // track page
-        } else if (_.bodyEl.className.match(/\br\-track\b/)) {
-          url.push({artist : '"' + h1.firstChild.textContent + '"'});
-          url.push({track : h1.lastChild.textContent.substring(3)});
-        }
-
-        a = _.createLink(url);
-        h1.appendChild(a);
-        if (append) {
-          div.previousSibling.previousSibling.getElementsByTagName('h1')[0].appendChild(a.cloneNode(true));
-        }
-      }
 
       addLinks();
 
@@ -225,13 +158,14 @@
     /**
      * Creates the actual link to append to the page
      */
-    createLink : function (url, text) {
-      var a, img;
+    createLink : function (url, text, color) {
+      var a, img, png;
 
       text = text || '';
+      color = color || '#222';
 
       img = document.createElement('img');
-      img.setAttribute('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAXtJREFUOBHl1EsrRVEUwPHjmUeUibyjFBOPEBNJKT4CZW6gTK58ADE2MTIwMvMFjBiYkUg3SaKkmFEekUf8/9i6LnXvjZlVP+fse/Ze9j6tdaLobyKXNHWmyvpFvnLWdqMHHShEzMzphnNbYBI1wLjAHrpQkiphHpMG4S464S6esY9FbOIQzTBhlCrhAHMm4S7WsYEt3ODHSJUwPJ9g9fmPGZJ+zE4a/3r4DxOGl57Ju7MZLOR65OMUV3iLTBPaXjOofV/++fch3GWacJaFRfC6jSdY1GNoxJfCLmXch2rYDccoQIhibmqwhLXwI1cL3Q6axl3YoR0R+3jwyNVyysELQtxys4thuG4HznWHI7Cb4r7gMizDBp/HEUzYDtuuEqOwUzyF/7gXiTUcZzyHE0St8Aj9SA7fzSpKkh64iTb4QahIfObW/XKcYQpNOIDHtTSG4AfhGolxyUDfwiMbfizHkXgUS2EFC7hHWhEShsmWRBUsB3f9WV/cpxWvOsg/bGzl/3YAAAAASUVORK5CYII=');
+      img.setAttribute('src', 'data:image/svg+xml;utf8,<svg viewBox="0 0 10 10" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M5,8.8817842e-16 C2.25,8.8817842e-16 0,2.25 0,5 C0,7.75 2.25,10 5,10 C7.75,10 10,7.75 10,5 C10,2.25 7.75,8.8817842e-16 5,8.8817842e-16 L5,8.8817842e-16 Z M7.275,7.225 C7.175,7.375 7,7.425 6.85,7.325 C5.675,6.6 4.2,6.45 2.45,6.85 C2.275,6.9 2.125,6.775 2.075,6.625 C2.025,6.45 2.15,6.3 2.3,6.25 C4.2,5.825 5.85,6 7.15,6.8 C7.325,6.875 7.375,7.075 7.275,7.225 L7.275,7.225 Z M7.9,5.85 C7.775,6.025 7.55,6.1 7.375,5.975 C6.025,5.15 3.975,4.9 2.4,5.4 C2.2,5.45 1.975,5.35 1.925,5.15 C1.875,4.95 1.975,4.725 2.175,4.675 C4,4.125 6.25,4.4 7.8,5.35 C7.95,5.425 8,5.675 7.9,5.85 L7.9,5.85 Z M7.95,4.45 C6.35,3.5 3.675,3.4 2.15,3.875 C1.9,3.95 1.65,3.8 1.575,3.575 C1.5,3.325 1.65,3.075 1.875,3 C3.65,2.475 6.575,2.575 8.425,3.675 C8.65,3.8 8.725,4.1 8.6,4.325 C8.45,4.5 8.175,4.575 7.95,4.45 L7.95,4.45 Z" fill="' + color + '"></path></svg>');
       img.setAttribute('alt', 'Open In Spotify');
       img.setAttribute('height', '10');
       img.setAttribute('width', '10');
@@ -240,9 +174,9 @@
 
       a = document.createElement('a');
       a.setAttribute('href', this.createUrl(url));
-      a.style.color              ='#222';
+      a.style.color              = color;
       a.style['text-decoration'] = 'none';
-      a.style['margin']          = '0 5px';
+      a.style.margin             = '0 5px';
 
       a.appendChild(img);
       a.appendChild(document.createTextNode(text));
