@@ -72,8 +72,6 @@
 
           // Add to the DOM
           items[i].appendChild(div);
-
-          hasRun = false;
         }
       };
 
@@ -81,7 +79,7 @@
 
       // Listen for updates to the DOM
       document.addEventListener('DOMNodeInserted', function (ev) {
-        if (ev.relatedNode.classList.contains('playlist') && !hasRun) {
+        if (ev.relatedNode.classList.contains('playlist')) {
           clearTimeout(timeout);
           timeout = setTimeout(addLinks, 2000);
         }
