@@ -97,11 +97,12 @@
     lastFm : function () {
       var _ = this,
           url = [],
+          hasRun = false,
           addLinks;
 
       addLinks = function () {
         var re = /^http:\/\/(.*\.|)(last\.fm|lastfm\.[^\/]+)\/music\/([^\?#]*)$/i,
-            elems, elem, match, found, parts, a;
+            elems, elem, match, a;
 
         elems = _.bodyEl.getElementsByClassName('link-block-target');
         for (var i = 0, l = elems.length; i < l; i++) {
@@ -110,7 +111,6 @@
           // Check if the link matches
           match = re.exec(elem.href);
           if (match) {
-
             // Create the spotify url
             url = [];
             url.push({artist : match[3]});
@@ -129,8 +129,9 @@
       addLinks();
 
       document.addEventListener('DOMNodeInserted', function (ev) {
-        if (ev.originalTarget !== undefined) {
-          addLinks();
+        if (ev.relatedNode.classList.contains('main-content') && !hasRun) {
+          hasRun = true;
+          setTimeout(addLinks, 2000);
         }
       }, true);
     },
@@ -159,7 +160,7 @@
      * Creates the actual link to append to the page
      */
     createLink : function (url, text, color) {
-      var a, img, png;
+      var a, img;
 
       text = text || '';
       color = color || '#222';
