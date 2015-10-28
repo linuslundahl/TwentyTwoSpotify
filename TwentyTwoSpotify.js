@@ -111,7 +111,7 @@
             url = [];
             url.push({artist : match[3]});
 
-            a = _.createLink(url, '', '#fff');
+            a = _.createLink(url, '', elem.parentNode.parentNode.classList.contains('chartlist-name') ? '#222' : '#fff');
 
             // Insert the link after the found link
             // Check if it already have a spotify url
